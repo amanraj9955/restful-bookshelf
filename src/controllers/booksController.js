@@ -4,13 +4,18 @@ const bookService = new BookService();
 
 const createBook = async (req, res) => {
   try {
-    const book = await bookService.create(req.body);
-    res.status(201).json({
-      data: book,
-      success: true,
-      err: {},
+    if(req.body?.author && req.body?.title){
+      const book = await bookService.create(req.body);
+      res.status(201).json({
+        data: book,
+        success: true,
+        err: {},
+      })
+    }else{
+      throw new Error("Book should have valid title and author");
+      
+    }
       message: 'Successfully created a book'
-    });
   } catch (err) {
     res.status(500).json({
       data: {},
